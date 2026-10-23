@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>About Unique Boutique</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.about{display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start}
+.about .tx{flex:1 1 420px;min-width:0}
+.about .ph{flex:1 1 360px;min-width:0}
+.about h2{font-size:clamp(30px,4.4vw,42px);line-height:1.12;font-weight:700}
+.about p{margin-top:18px;font-size:19px;line-height:1.65;max-width:560px}
+.holder{margin-top:22px;padding:18px 20px;border:2px dashed #8a7a66;color:var(--muted);font-size:17px;line-height:1.55;max-width:560px}
+.facts{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0;max-width:560px}
+.facts li{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:18px}
+.facts li span:first-child{color:var(--muted)}
+.facts li span:last-child{font-family:var(--display);font-size:20px;text-align:right}
+.about .sign{max-width:520px}
+</style>
+</head>
+<body>
+<div id="hdr"></div>
+
+<section class="planks">
+  <div class="wrap" style="padding-block:56px">
+    <div class="eyebrow">About the shop</div>
+    <h1 aria-label="About" style="margin-top:12px;font-size:clamp(52px,10vw,104px);line-height:1.05;font-weight:700;text-shadow:0 3px 0 rgba(0,0,0,.3)"><span data-q="ABOUT" aria-hidden="true">ABOUT</span></h1>
+    <p style="margin-top:18px;font-size:21px;max-width:600px;line-height:1.5">Curiosities, collectibles and one-of-a-kind finds, curated eccentricity in Willow Creek.</p>
+  </div>
+</section>
+
+<main class="wrap band">
+  <div class="about">
+    <div class="tx">
+      <div class="eyebrow">Our story</div>
+      <h2 style="margin-top:10px">[A headline in the owners' words]</h2>
+      <div class="holder">[The shop's story goes here, written by the owners: how it began, what they look for, and what makes something a find.]</div>
+      <p>We rearrange the shop on purpose, so no visit is ever the same.</p>
+      <ul class="facts">
+        <li><span>Open since</span><span>2024</span></li>
+        <li><span>Where</span><span>111 Mayfair St, Willow Creek, CA</span></li>
+        <li><span>Call</span><span id="tel"></span></li>
+        <li><span>Hours</span><span id="hrs"></span></li>
+      </ul>
+      <div style="margin-top:32px;display:flex;flex-wrap:wrap;gap:16px">
+        <a class="btn dark" href="magazine.html" id="mag"></a>
+        <a class="btn line" href="shop.html" style="color:var(--ink)">Browse the shop</a>
+      </div>
+    </div>
+    <div class="ph"><img class="sign" src="img/sign.jpg" alt="The Unique Boutique sign: cream wooden letters set at jaunty angles on reclaimed wood"></div>
+  </div>
+</main>
+
+<div id="ftr"></div>
+<script src="site.js"></script>
+<script>
+UB.chrome('about');
+document.getElementById('tel').textContent = UB.SITE.phone;
+document.getElementById('hrs').textContent = UB.SITE.hours;
+document.getElementById('mag').innerHTML = UB.KEY(34, '#f5eedd', 7) + ' Peruse the magazine';
+</script>
+</body>
+</html>

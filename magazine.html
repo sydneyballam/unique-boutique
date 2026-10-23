@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Unique Boutique Magazine</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+/* The magazine is the whole window: one full-bleed photograph per page, no chrome. */
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111312}
+body{min-height:100%}
+main{position:fixed;inset:0;overflow:hidden}
+#book{position:absolute;inset:0;width:100%;height:100%;margin:0;box-shadow:none}
+.stf__parent{position:absolute!important;inset:0!important;margin:0!important;overflow:visible!important}
+.stf__block{overflow:visible!important}
+.stf__item{background:#111312}
+.page{position:relative;overflow:hidden;background:#111312;border:0}
+.page img{-webkit-user-drag:none;user-select:none}
+.page .bk{position:absolute;inset:0;background-size:cover;background-position:center;background-color:#2a1a12}
+.page .bk:after{content:"";position:absolute;inset:0;background:rgba(10,8,6,.38)}
+.page .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.page .ph.fill{object-fit:cover}
+.page.keypage{background:#111312}
+.page.keypage a{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.page.keypage svg{width:min(52vw,320px);height:auto;filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))}
+
+/* Cover, after the catalog cover the client liked */
+.page.cover{background:radial-gradient(ellipse at 50% 40%,rgba(164,128,72,.25),transparent 38%),linear-gradient(145deg,rgba(17,20,18,.25),rgba(17,20,18,.94)),#242923;color:#f7f2e8;font-family:'Montserrat',sans-serif;letter-spacing:.02em}
+.page.cover .in{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:clamp(28px,7vw,100px) clamp(24px,8vw,120px)}
+.page.cover:before,.page.cover:after{content:"";position:absolute;pointer-events:none;border:1px solid rgba(196,164,111,.5);z-index:2}
+.page.cover:before{inset:clamp(14px,2.5vw,34px)}
+.page.cover:after{inset:clamp(20px,3.3vw,46px);border-color:rgba(247,242,232,.15)}
+.cover .kick{text-transform:uppercase;letter-spacing:.34em;font-size:clamp(9px,1vw,13px);color:#d6b77f}
+.cover .rule{width:54px;height:1px;background:#b89760;margin:clamp(22px,4vh,42px) auto}
+.cover h1{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4.2rem,12vw,11.5rem);line-height:.72;font-weight:400;letter-spacing:-.045em;color:#f7f2e8;text-wrap:balance}
+.cover h1 em{font-weight:400}
+.cover .deck{max-width:27rem;margin:clamp(24px,4vh,42px) auto 0;color:rgba(247,242,232,.78);font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:clamp(1.2rem,2.3vw,2rem);line-height:1.2}
+.cover .info{margin-top:clamp(32px,6vh,64px);display:flex;flex-direction:column;align-items:center;gap:10px}
+.cover .loc{color:#d6b77f;font-size:clamp(10px,1vw,13px);text-transform:uppercase;letter-spacing:.22em}
+.cover .tel{color:#f7f2e8;font-size:clamp(15px,1.7vw,22px);letter-spacing:.08em;text-decoration:none;border-bottom:1px solid rgba(214,183,127,.65);padding-bottom:5px}
+.cover .inv{margin-top:8px;color:rgba(247,242,232,.65);font-size:9px;letter-spacing:.24em;text-transform:uppercase}
+.cover .ed{position:absolute;bottom:clamp(28px,5vh,58px);left:0;right:0;text-align:center;color:rgba(247,242,232,.48);font-size:9px;text-transform:uppercase;letter-spacing:.22em;z-index:3}
+.cover .ed span{padding:0 .5em;color:#b89760}
+@media (max-width:640px){.cover h1{font-size:clamp(3.8rem,18vw,6.5rem)}.cover .deck{max-width:17rem}}
+
+.edge{position:fixed;top:0;bottom:0;width:clamp(36px,5vw,72px);z-index:120;border:0;padding:0;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;opacity:.35;transition:opacity .2s ease,width .2s ease}
+.edge svg{filter:drop-shadow(0 1px 6px rgba(0,0,0,.7))}
+.edge.prev{left:0;background:linear-gradient(90deg,rgba(10,12,11,.35),transparent)}
+.edge.next{right:0;background:linear-gradient(270deg,rgba(10,12,11,.35),transparent)}
+.edge:hover,.edge:focus-visible{opacity:1;width:clamp(44px,6vw,86px)}
+.edge:focus-visible{outline:2px solid var(--brass);outline-offset:-2px}
+.edge:disabled{opacity:0;pointer-events:none}
+.homekey{position:fixed;z-index:130;top:max(14px,env(safe-area-inset-top,0px));left:max(16px,env(safe-area-inset-left,0px));min-height:48px;padding:0 18px;border-radius:24px;display:inline-flex;align-items:center;background:rgba(17,19,18,.55);border:1px solid rgba(232,194,122,.55);text-decoration:none}
+.homekey:hover,.homekey:focus-visible{background:rgba(17,19,18,.85)}
+@media (prefers-reduced-motion:reduce){.edge{transition-duration:.01ms}}
+</style>
+</head>
+<body>
+<main>
+  <div id="book" aria-label="Photographs of the shop"></div>
+  <button id="prevMargin" class="edge prev" type="button" aria-label="Previous page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button id="nextMargin" class="edge next" type="button" aria-label="Next page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+  <a class="homekey" href="index.html" aria-label="Back to the home page" id="homeKey"></a>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+<script src="site.js"></script>
+<script>
+document.getElementById('homeKey').innerHTML = UB.KEY(44, '#e8c27a', 6);
+const bookEl = document.getElementById('book');
+const prevBtn = document.getElementById('prevMargin'), nextBtn = document.getElementById('nextMargin');
+let flip = null, cur = 0, count = 0, scenesNow = [], token = 0;
+
+const load = (src) => new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+/* A few pixels, stretched, makes a soft colour wash that needs no blur filter while pages move. */
+function wash(img) {
+  try { const c = document.createElement('canvas'); c.width = 48; c.height = Math.max(16, Math.round(48 * img.naturalHeight / img.naturalWidth)); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); return c.toDataURL('image/jpeg', .7); } catch (e) { return ''; }
+}
+function pageEl(src, alt, img, vw, vh) {
+  const el = document.createElement('div'); el.className = 'page';
+  let fill = false;
+  if (img) { const r = (img.naturalWidth / img.naturalHeight) / (vw / vh); fill = r > 0.62 && r < 1.6; }
+  const w = img && !fill ? wash(img) : '';
+  el.innerHTML = (w ? '<div class="bk" style="background-image:url(' + w + ')"></div>' : '') + '<img class="ph' + (fill ? ' fill' : '') + '" alt="' + UB.esc(alt) + '" src="' + UB.esc(src) + '">';
+  return el;
+}
+function coverPage() {
+  const el = document.createElement('div'); el.className = 'page cover';
+  el.innerHTML = '<div class="in"><div class="kick">A different kind of find</div><div class="rule"></div><h1>Unique<br><em>Boutique</em></h1><p class="deck">Unexpected treasures. Pre-loved pieces. One-of-a-kind finds.</p><div class="info"><span class="loc">Willow Creek, California</span><a class="tel" href="tel:' + UB.SITE.tel + '" onclick="event.stopPropagation()">' + UB.SITE.phone + '</a><span class="inv">Explore the collection</span></div></div><div class="ed">The shop catalog <span>&bull;</span> 2026</div>';
+  return el;
+}
+function keyPage() {
+  const el = document.createElement('div'); el.className = 'page keypage';
+  el.innerHTML = '<a href="index.html" aria-label="Back to the home page" onclick="event.stopPropagation()">' + UB.KEY(320, '#e8c27a', 4) + '</a>';
+  return el;
+}
+function nav(i) {
+  cur = Math.max(0, Math.min(i, count - 1));
+  prevBtn.disabled = cur <= 0; nextBtn.disabled = cur >= count - 1;
+}
+async function build(scenes, keep) {
+  const my = ++token;
+  const sources = scenes.map((s) => ({ src: UB.src(s), alt: s.title || 'A corner of the shop' }));
+  const imgs = await Promise.all(sources.map((s) => load(s.src)));
+  if (my !== token) return;
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const pages = [coverPage()].concat(sources.map((s, i) => pageEl(s.src, s.alt, imgs[i], vw, vh))); pages.push(keyPage());
+  count = pages.length;
+  if (flip) { try { flip.destroy(); } catch (e) {} flip = null; }
+  bookEl.innerHTML = ''; bookEl.className = '';
+  pages.forEach((p) => bookEl.appendChild(p));
+  if (window.St && window.St.PageFlip) {
+    flip = new St.PageFlip(bookEl, { width: Math.max(320, vw), height: Math.max(480, vh), size: 'fixed', minWidth: 320, maxWidth: 2400, minHeight: 480, maxHeight: 2400, autoSize: false, maxShadowOpacity: 0.52, showCover: false, mobileScrollSupport: true, flippingTime: 1050, usePortrait: true, startPage: Math.min(keep || 0, count - 1), drawShadow: true, startZIndex: 10, useMouseEvents: true, clickEventForward: true, swipeDistance: 30, showPageCorners: true, disableFlipByClick: false });
+    flip.loadFromHTML(pages);
+    flip.on('flip', (e) => nav(e.data));
+  } else {
+    bookEl.style.overflowY = 'auto'; pages.forEach((p) => { p.style.height = '100vh'; });
+  }
+  nav(Math.min(keep || 0, count - 1));
+}
+UB.subscribe((list) => {
+  const scenes = list.filter((d) => d.kind === 'scene').slice(0, 20);
+  const key = JSON.stringify(scenes.map((s) => [s.id, s.img, s.imgId]));
+  if (key === scenesNow.key) return;
+  scenesNow = scenes; scenesNow.key = key; build(scenes, cur);
+});
+prevBtn.addEventListener('click', () => { if (flip && cur > 0) flip.flipPrev('top'); });
+nextBtn.addEventListener('click', () => { if (flip && cur < count - 1) flip.flipNext('top'); });
+let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => build(scenesNow, cur), 200); });
+document.addEventListener('keydown', (e) => {
+  if (e.altKey || e.ctrlKey || e.metaKey || (e.target.closest && e.target.closest('a,button,input,textarea,select'))) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); nextBtn.click(); } else if (e.key === 'ArrowLeft') { e.preventDefault(); prevBtn.click(); }
+});
+</script>
+</body>
+</html>

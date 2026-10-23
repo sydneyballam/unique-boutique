@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Unique Boutique Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+</head>
+<body>
+<div id="hdr"></div>
+
+<section class="planks">
+  <div class="wrap" style="padding-block:56px">
+    <div class="eyebrow">Browse from home</div>
+    <h1 style="margin-top:12px;font-size:clamp(44px,8vw,64px);line-height:1;font-weight:700;text-shadow:0 3px 0 rgba(0,0,0,.25)"><span data-q="THE SHOP" aria-hidden="true">THE SHOP</span><span class="sr" style="position:absolute;left:-9999px">The Shop</span></h1>
+    <p style="margin-top:20px;font-size:20px;max-width:600px">A few of the pieces that have come through the door lately. Everything is for sale in the shop. Call or stop in to ask about anything you see.</p>
+  </div>
+</section>
+
+<main class="wrap" style="padding-block:32px 24px">
+  <div class="chips" role="group" aria-label="Filter items" id="chips">
+    <button class="chip" type="button" data-f="all" aria-pressed="true">All</button>
+    <button class="chip" type="button" data-f="available" aria-pressed="false">Available</button>
+    <button class="chip" type="button" data-f="sold" aria-pressed="false">Recently sold</button>
+    <span class="muted" id="count" style="margin-left:auto;font-size:15px"></span>
+  </div>
+  <div class="grid" id="grid" style="margin-top:32px"></div>
+</main>
+
+<section class="night" style="margin-top:48px">
+  <div class="wrap" style="padding-block:56px;display:flex;flex-wrap:wrap;gap:24px 40px;align-items:center;justify-content:space-between">
+    <div style="flex:1 1 400px;min-width:0">
+      <h2 style="font-size:clamp(28px,4vw,38px);line-height:1.1;font-weight:700">Something caught your eye?</h2>
+      <p style="margin-top:12px;font-size:19px;color:#e9dfc9;max-width:520px">Items move around the shop all the time and sell quickly. Call to ask about a piece, or come in and see it in person.</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+      <span class="btn brass" id="phoneBtn" style="user-select:all"></span>
+      <a class="btn line" href="index.html#visit">Hours and directions</a>
+    </div>
+  </div>
+</section>
+
+<div id="ftr"></div>
+
+<div class="veil" id="veil" hidden>
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dtitle">
+    <button class="x" type="button" id="dclose" aria-label="Close">&times;</button>
+    <div class="dl-img"><img id="dimg" alt=""><div class="thumbs" id="dthumbs"></div></div>
+    <div class="dl-txt">
+      <h2 id="dtitle"></h2>
+      <p id="dprice" style="margin-top:10px;font-size:20px;font-weight:700"></p>
+      <p id="dnote" style="margin-top:10px;color:#4a3d32"></p>
+      <p id="dsold" class="muted" style="margin-top:10px" hidden>This one has sold. Ask us what else has come in.</p>
+      <div style="margin-top:20px"><label for="dcap" style="font-weight:700">Facebook caption</label><textarea id="dcap" readonly></textarea></div>
+      <div style="margin-top:12px"><button class="btn dark" type="button" id="dcopy">Copy caption</button></div>
+      <p class="muted" style="margin-top:14px;font-size:15px" id="dtel"></p>
+    </div>
+  </div>
+</div>
+
+<script src="site.js"></script>
+<script>
+UB.chrome('shop');
+document.getElementById('phoneBtn').textContent = 'Call ' + UB.SITE.phone;
+let filter = 'all', docs = [], cur = null, lastFocus = null;
+const veil = document.getElementById('veil');
+
+function paint() {
+  const items = docs.filter((d) => d.kind === 'item').filter((d) => filter === 'all' ? true : filter === 'sold' ? d.status === 'sold' : d.status !== 'sold');
+  document.getElementById('grid').innerHTML = items.length ? items.map((d) => UB.card(d)).join('') : '<p class="muted" style="grid-column:1/-1;font-size:19px">Nothing here yet. Check back soon, or stop in and see what has moved.</p>';
+  document.getElementById('count').textContent = items.length + (items.length === 1 ? ' piece' : ' pieces');
+  document.querySelectorAll('#chips .chip').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.f === filter)));
+}
+UB.subscribe((l) => { docs = l; paint(); const h = location.hash.slice(1); });
+document.getElementById('chips').addEventListener('click', (e) => { const b = e.target.closest('.chip'); if (b) { filter = b.dataset.f; paint(); } });
+
+function openItem(d) {
+  cur = d; lastFocus = document.activeElement;
+  document.getElementById('dtitle').textContent = d.title;
+  document.getElementById('dprice').textContent = UB.priceText(d);
+  document.getElementById('dnote').textContent = d.note || '';
+  document.getElementById('dsold').hidden = d.status !== 'sold';
+  document.getElementById('dcap').value = UB.caption(d);
+  document.getElementById('dtel').textContent = 'Questions? ' + UB.SITE.phone;
+  const pics = [UB.src(d), UB.src2(d)].filter(Boolean), im = document.getElementById('dimg'), th = document.getElementById('dthumbs');
+  im.src = pics[0]; im.alt = d.title; th.innerHTML = '';
+  if (pics.length > 1) pics.forEach((p, i) => { const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Photo ' + (i + 1)); b.setAttribute('aria-current', i === 0 ? 'true' : 'false'); b.innerHTML = '<img alt="">'; b.firstChild.src = p; b.onclick = () => { im.src = p; th.querySelectorAll('button').forEach((x) => x.setAttribute('aria-current', 'false')); b.setAttribute('aria-current', 'true'); }; th.appendChild(b); });
+  veil.hidden = false; document.getElementById('dclose').focus();
+}
+function closeItem() { veil.hidden = true; if (lastFocus) lastFocus.focus(); }
+document.getElementById('dclose').onclick = closeItem;
+veil.addEventListener('click', (e) => { if (e.target === veil) closeItem(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !veil.hidden) closeItem(); });
+document.getElementById('dcopy').onclick = () => UB.copy(document.getElementById('dcap').value, document.getElementById('dcap'));
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-open]'); if (!b) return; const d = docs.find((x) => x.id === b.getAttribute('data-open')); if (d) openItem(d); });
+</script>
+</body>
+</html>
