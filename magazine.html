@@ -7,11 +7,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
-/* The magazine is the whole window: one full-bleed photograph per page, no chrome. */
+/* The magazine fills the window. Wide screens show a two-page spread; phones show one full page. */
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111312}
 body{min-height:100%}
 main{position:fixed;inset:0;overflow:hidden}
-#book{position:absolute;inset:0;width:100%;height:100%;margin:0;box-shadow:none}
+#book{position:absolute;inset:0;width:100%;height:100%;margin:0;box-shadow:none;transition:transform .6s cubic-bezier(.4,.1,.2,1)}
+body.wide #book{inset:22px clamp(56px,6vw,96px)}
 .stf__parent{position:absolute!important;inset:0!important;margin:0!important;overflow:visible!important}
 .stf__block{overflow:visible!important}
 .stf__item{background:#111312}
@@ -23,26 +24,25 @@ main{position:fixed;inset:0;overflow:hidden}
 .page .ph.fill{object-fit:cover}
 .page.keypage{background:#111312}
 .page.keypage a{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
-.page.keypage svg{width:min(52vw,320px);height:auto;filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))}
+.page.keypage svg{width:min(52%,320px);height:auto;filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))}
 
-/* Cover, after the catalog cover the client liked */
-.page.cover{background:radial-gradient(ellipse at 50% 40%,rgba(164,128,72,.25),transparent 38%),linear-gradient(145deg,rgba(17,20,18,.25),rgba(17,20,18,.94)),#242923;color:#f7f2e8;font-family:'Montserrat',sans-serif;letter-spacing:.02em}
-.page.cover .in{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:clamp(28px,7vw,100px) clamp(24px,8vw,120px)}
-.page.cover:before,.page.cover:after{content:"";position:absolute;pointer-events:none;border:1px solid rgba(196,164,111,.5);z-index:2}
-.page.cover:before{inset:clamp(14px,2.5vw,34px)}
-.page.cover:after{inset:clamp(20px,3.3vw,46px);border-color:rgba(247,242,232,.15)}
-.cover .kick{text-transform:uppercase;letter-spacing:.34em;font-size:clamp(9px,1vw,13px);color:#d6b77f}
-.cover .rule{width:54px;height:1px;background:#b89760;margin:clamp(22px,4vh,42px) auto}
-.cover h1{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4.2rem,12vw,11.5rem);line-height:.72;font-weight:400;letter-spacing:-.045em;color:#f7f2e8;text-wrap:balance}
+/* Cover, after the catalog cover the client liked. Sized from its own page so it fits one page of a spread or a phone screen. */
+.page.cover{container-type:inline-size;background:radial-gradient(ellipse at 50% 40%,rgba(164,128,72,.25),transparent 38%),linear-gradient(145deg,rgba(17,20,18,.25),rgba(17,20,18,.94)),#242923;color:#f7f2e8;font-family:'Montserrat',sans-serif;letter-spacing:.02em}
+.page.cover .in{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:9cqw 10cqw}
+.cover .f1,.cover .f2{position:absolute;pointer-events:none;border:1px solid rgba(196,164,111,.5)}
+.cover .f1{inset:max(14px,4cqw)}
+.cover .f2{inset:max(20px,5.4cqw);border-color:rgba(247,242,232,.15)}
+.cover .kick{text-transform:uppercase;letter-spacing:.34em;font-size:clamp(9px,2.3cqw,13px);color:#d6b77f}
+.cover .rule{width:54px;height:1px;background:#b89760;margin:clamp(18px,5cqw,42px) auto}
+.cover h1{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3.2rem,19cqw,9rem);line-height:.74;font-weight:400;letter-spacing:-.045em;color:#f7f2e8}
 .cover h1 em{font-weight:400}
-.cover .deck{max-width:27rem;margin:clamp(24px,4vh,42px) auto 0;color:rgba(247,242,232,.78);font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:clamp(1.2rem,2.3vw,2rem);line-height:1.2}
-.cover .info{margin-top:clamp(32px,6vh,64px);display:flex;flex-direction:column;align-items:center;gap:10px}
-.cover .loc{color:#d6b77f;font-size:clamp(10px,1vw,13px);text-transform:uppercase;letter-spacing:.22em}
-.cover .tel{color:#f7f2e8;font-size:clamp(15px,1.7vw,22px);letter-spacing:.08em;text-decoration:none;border-bottom:1px solid rgba(214,183,127,.65);padding-bottom:5px}
+.cover .deck{max-width:90%;margin:clamp(20px,5cqw,42px) auto 0;color:rgba(247,242,232,.78);font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:clamp(1.05rem,4.6cqw,1.9rem);line-height:1.2}
+.cover .info{margin-top:clamp(26px,7cqw,60px);display:flex;flex-direction:column;align-items:center;gap:10px}
+.cover .loc{color:#d6b77f;font-size:clamp(10px,2.3cqw,13px);text-transform:uppercase;letter-spacing:.22em}
+.cover .tel{color:#f7f2e8;font-size:clamp(15px,3.8cqw,22px);letter-spacing:.08em;text-decoration:none;border-bottom:1px solid rgba(214,183,127,.65);padding-bottom:5px}
 .cover .inv{margin-top:8px;color:rgba(247,242,232,.65);font-size:9px;letter-spacing:.24em;text-transform:uppercase}
-.cover .ed{position:absolute;bottom:clamp(28px,5vh,58px);left:0;right:0;text-align:center;color:rgba(247,242,232,.48);font-size:9px;text-transform:uppercase;letter-spacing:.22em;z-index:3}
+.cover .ed{position:absolute;bottom:max(26px,7cqw);left:0;right:0;text-align:center;color:rgba(247,242,232,.48);font-size:9px;text-transform:uppercase;letter-spacing:.22em;z-index:3}
 .cover .ed span{padding:0 .5em;color:#b89760}
-@media (max-width:640px){.cover h1{font-size:clamp(3.8rem,18vw,6.5rem)}.cover .deck{max-width:17rem}}
 
 .edge{position:fixed;top:0;bottom:0;width:clamp(36px,5vw,72px);z-index:120;border:0;padding:0;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;opacity:.35;transition:opacity .2s ease,width .2s ease}
 .edge svg{filter:drop-shadow(0 1px 6px rgba(0,0,0,.7))}
@@ -77,17 +77,17 @@ const load = (src) => new Promise((res) => { const i = new Image(); i.onload = (
 function wash(img) {
   try { const c = document.createElement('canvas'); c.width = 48; c.height = Math.max(16, Math.round(48 * img.naturalHeight / img.naturalWidth)); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); return c.toDataURL('image/jpeg', .7); } catch (e) { return ''; }
 }
-function pageEl(src, alt, img, vw, vh) {
+function pageEl(src, alt, img, ar) {
   const el = document.createElement('div'); el.className = 'page';
   let fill = false;
-  if (img) { const r = (img.naturalWidth / img.naturalHeight) / (vw / vh); fill = r > 0.62 && r < 1.6; }
+  if (img) { const r = (img.naturalWidth / img.naturalHeight) / ar; fill = r > 0.6 && r < 1.8; }
   const w = img && !fill ? wash(img) : '';
   el.innerHTML = (w ? '<div class="bk" style="background-image:url(' + w + ')"></div>' : '') + '<img class="ph' + (fill ? ' fill' : '') + '" alt="' + UB.esc(alt) + '" src="' + UB.esc(src) + '">';
   return el;
 }
 function coverPage() {
   const el = document.createElement('div'); el.className = 'page cover';
-  el.innerHTML = '<div class="in"><div class="kick">A different kind of find</div><div class="rule"></div><h1>Unique<br><em>Boutique</em></h1><p class="deck">Unexpected treasures. Pre-loved pieces. One-of-a-kind finds.</p><div class="info"><span class="loc">Willow Creek, California</span><a class="tel" href="tel:' + UB.SITE.tel + '" onclick="event.stopPropagation()">' + UB.SITE.phone + '</a><span class="inv">Explore the collection</span></div></div><div class="ed">The shop catalog <span>&bull;</span> 2026</div>';
+  el.innerHTML = '<div class="in"><div class="f1"></div><div class="f2"></div><div class="kick">A different kind of find</div><div class="rule"></div><h1>Unique<br><em>Boutique</em></h1><p class="deck">Unexpected treasures. Pre-loved pieces. One-of-a-kind finds.</p><div class="info"><span class="loc">Willow Creek, California</span><a class="tel" href="tel:' + UB.SITE.tel + '" onclick="event.stopPropagation()">' + UB.SITE.phone + '</a><span class="inv">Explore the collection</span></div></div><div class="ed">The shop catalog <span>&bull;</span> 2026</div>';
   return el;
 }
 function keyPage() {
@@ -95,9 +95,14 @@ function keyPage() {
   el.innerHTML = '<a href="index.html" aria-label="Back to the home page" onclick="event.stopPropagation()">' + UB.KEY(320, '#e8c27a', 4) + '</a>';
   return el;
 }
+let wide = false;
 function nav(i) {
   cur = Math.max(0, Math.min(i, count - 1));
-  prevBtn.disabled = cur <= 0; nextBtn.disabled = cur >= count - 1;
+  prevBtn.disabled = cur <= 0; nextBtn.disabled = cur >= count - (wide ? 2 : 1);
+  /* A closed book sits centred, like one on a table. */
+  let shift = 0;
+  if (wide && flip) { try { const pw = flip.getBoundsRect().pageWidth; if (cur === 0) shift = -pw / 2; else if (count % 2 === 0 && cur >= count - 1) shift = pw / 2; } catch (e) {} }
+  bookEl.style.transform = shift ? 'translateX(' + shift + 'px)' : '';
 }
 async function build(scenes, keep) {
   const my = ++token;
@@ -105,13 +110,19 @@ async function build(scenes, keep) {
   const imgs = await Promise.all(sources.map((s) => load(s.src)));
   if (my !== token) return;
   const vw = window.innerWidth, vh = window.innerHeight;
-  const pages = [coverPage()].concat(sources.map((s, i) => pageEl(s.src, s.alt, imgs[i], vw, vh))); pages.push(keyPage());
+  wide = vw >= 860 && vw / vh >= 1.1;
+  document.body.classList.toggle('wide', wide);
+  const ar = wide ? 0.75 : vw / vh;
+  const pages = [coverPage()].concat(sources.map((s, i) => pageEl(s.src, s.alt, imgs[i], ar))); pages.push(keyPage());
   count = pages.length;
   if (flip) { try { flip.destroy(); } catch (e) {} flip = null; }
   bookEl.innerHTML = ''; bookEl.className = '';
   pages.forEach((p) => bookEl.appendChild(p));
   if (window.St && window.St.PageFlip) {
-    flip = new St.PageFlip(bookEl, { width: Math.max(320, vw), height: Math.max(480, vh), size: 'fixed', minWidth: 320, maxWidth: 2400, minHeight: 480, maxHeight: 2400, autoSize: false, maxShadowOpacity: 0.52, showCover: false, mobileScrollSupport: true, flippingTime: 1050, usePortrait: true, startPage: Math.min(keep || 0, count - 1), drawShadow: true, startZIndex: 10, useMouseEvents: true, clickEventForward: true, swipeDistance: 30, showPageCorners: true, disableFlipByClick: false });
+    const common = { maxShadowOpacity: 0.5, mobileScrollSupport: true, flippingTime: 1000, startPage: Math.min(keep || 0, count - 1), drawShadow: true, startZIndex: 10, useMouseEvents: true, clickEventForward: true, swipeDistance: 30, showPageCorners: true, disableFlipByClick: false };
+    flip = new St.PageFlip(bookEl, wide
+      ? Object.assign({ width: 600, height: 800, size: 'stretch', minWidth: 260, maxWidth: 1200, minHeight: 347, maxHeight: 1600, showCover: true, usePortrait: false }, common)
+      : Object.assign({ width: Math.max(320, vw), height: Math.max(480, vh), size: 'fixed', minWidth: 320, maxWidth: 2400, minHeight: 480, maxHeight: 2400, autoSize: false, showCover: false, usePortrait: true }, common));
     flip.loadFromHTML(pages);
     flip.on('flip', (e) => nav(e.data));
   } else {
